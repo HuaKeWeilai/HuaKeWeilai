@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hua Ke 蔚来 · 实用资源站</title>
+    <!-- 浏览器标签图标 favicon（图二） -->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== CSS 变量 ===== */
+        :root {
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --nav-height: 72px;
+            --radius-card: 16px;
+            --radius-btn: 50px;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        /* 浅色主题 (默认) */
+        [data-theme="light"] {
+            --bg-body: #f0f6fe;
+            --bg-surface: #ffffff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #eef4fc;
+            --bg-nav: rgba(255, 255, 255, 0.72);
+            --border-card: #d9e2ef;
+            --text-primary: #0b1a2e;
+            --text-secondary: #2c405a;
+            --text-muted: #5d7390;
+            --shadow-card: 0 8px 28px rgba(74, 144, 217, 0.10);
+            --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.04);
+            --accent: #4a90d9;
+            --accent-light: #6ba3e6;
+            --accent-dark: #2c6fb0;
+            --accent-bg: rgba(74, 144, 217, 0.10);
+            --gradient-hero: linear-gradient(145deg, #e6f0ff 0%, #f0f6fe 100%);
+            --hero-orb: rgba(74, 144, 217, 0.12);
+            --popup-bg: #ffffff;
+            --popup-text: #0b1a2e;
+        }
+        /* 深色主题 */
+        [data-theme="dark"] {
+            --bg-body: #0e141f;
+            --bg-surface: #151e2d;
+            --bg-card: #1a2538;
+            --bg-card-hover: #24334a;
+            --bg-nav: rgba(14, 20, 31, 0.85);
+            --border-card: #2a3a52;
+            --text-primary: #eaf0f8;
+            --text-secondary: #a8bbd6;
+            --text-muted: #6b84a5;
+            --shadow-card: 0 8px 28px rgba(0, 0, 0, 0.5);
+            --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.6);
+            --accent: #5b8def;
+            --accent-light: #7aa5f2;
+            --accent-dark: #3a6fc9;
+            --accent-bg: rgba(91, 141, 239, 0.15);
+            --gradient-hero: linear-gradient(145deg, #0e141f 0%, #182236 100%);
+            --hero-orb: rgba(91, 141, 239, 0.12);
+            --popup-bg: #1a2538;
+            --popup-text: #eaf0f8;
+        }
+        /* ===== 公众号弹窗样式 ===== */
+        #mpPopup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        #mpPopup .popup-box {
+            background: var(--popup-bg);
+            color: var(--popup-text);
+            padding: 28px;
+            border-radius: var(--radius-card);
+            text-align: center;
+            max-width: 320px;
+            margin: 16px;
+            box-shadow: var(--shadow-card);
+        }
+        #mpPopup .popup-box h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        #mpPopup .popup-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        #mpPopup .popup-box img {
+            width: 220px;
+            margin: 0 auto 16px;
+            border-radius: 8px;
+        }
+        /* ===== 服务条款 & 隐私政策弹窗通用样式 ===== */
+        #termPopup, #privacyPopup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        #termPopup .popup-box, #privacyPopup .popup-box {
+            background: var(--popup-bg);
+            color: var(--popup-text);
+            padding: 32px;
+            border-radius: var(--radius-card);
+            width: 92%;
+            max-width: 680px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-card);
+        }
+        #termPopup h3, #privacyPopup h3 {
+            font-size: 22px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-card);
+        }
+        .popup-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            min-height: 300px;
+            white-space: normal;
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+        .pop-close {
+            margin-top: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        /* ===== 重置 & 基础 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--nav-height);
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        /* ===== 导航栏 ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            background: var(--bg-nav);
+            backdrop-filter: blur(16px) saturate(1.4);
+            -webkit-backdrop-filter: blur(16px) saturate(1.4);
+            border-bottom: 1px solid var(--border-card);
+            z-index: 999;
+            transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+            box-shadow: var(--shadow-nav);
+        }
+        .nav-logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        .nav-logo img {
+            height: 36px;
+            object-fit: contain;
+        }
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .nav-links a {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+            background: var(--accent-bg);
+        }
+        .nav-links a.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .nav-cta {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 8px 24px !important;
+            border-radius: var(--radius-btn) !important;
+            font-weight: 600 !important;
+        }
+        .nav-cta:hover {
+            background: var(--accent-dark) !important;
+            transform: scale(1.03);
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 30px;
+            padding: 6px 12px;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+        .theme-toggle .icon-sun,
+        .theme-toggle .icon-moon {
+            transition: opacity 0.2s;
+        }
+        [data-theme="light"] .theme-toggle .icon-moon {
+            display: none;
+        }
+        [data-theme="dark"] .theme-toggle .icon-sun {
+            display: none;
+        }
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 6px;
+            background: none;
+            border: none;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 26px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 4px;
+            transition: all var(--transition);
+        }
+        .nav-toggle.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .nav-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        /* ===== 页面容器 ===== */
+        .page-container {
+            padding-top: var(--nav-height);
+            min-height: 100vh;
+        }
+        .page {
+            display: none;
+            animation: fadeUp 0.5s ease forwards;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* ===== 通用 ===== */
+        section {
+            padding: 80px 0;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            background: var(--accent-bg);
+            padding: 4px 18px;
+            border-radius: 30px;
+        }
+        .section-title {
+            font-size: clamp(30px, 4.5vw, 48px);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .section-title .highlight {
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 34px;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-card);
+        }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(74, 144, 217, 0.30);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(74, 144, 217, 0.45);
+            background: var(--accent-dark);
+        }
+        .btn-outline {
+            border-color: var(--border-card);
+        }
+        .btn-outline:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent);
+        }
+        .btn-sm {
+            font-size: 14px;
+            padding: 8px 22px;
+            border-radius: var(--radius-btn);
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .btn-sm:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        /* ===== 首页 ===== */
+        #home {
+            background: var(--gradient-hero);
+            min-height: calc(100vh - var(--nav-height));
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #home::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--hero-orb) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        #home::before {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--hero-orb) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .home-content h1 {
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+        .home-content h1 .accent {
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .home-content .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        .home-content .tagline {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            max-width: 480px;
+            line-height: 1.8;
+        }
+        .home-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .home-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-card);
+        }
+        .home-stats .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .home-stats .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .home-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .home-visual .orb {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--accent-bg), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 6s ease-in-out infinite;
+            border: 1px solid var(--border-card);
+            backdrop-filter: blur(4px);
+        }
+        .home-visual .orb-inner {
+            font-size: 100px;
+            font-weight: 700;
+            opacity: 0.15;
+            letter-spacing: -6px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            user-select: none;
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-18px) scale(1.02);
+            }
+        }
+        /* ===== 服务页 ===== */
+        #services-page {
+            background: var(--bg-body);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 28px;
+            margin-top: 50px;
+        }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-card);
+            padding: 36px 28px;
+            text-align: center;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-card);
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+            box-shadow: 0 12px 36px rgba(74, 144, 217, 0.15);
+        }
+        .service-card .icon {
+            font-size: 42px;
+            margin-bottom: 18px;
+            display: inline-block;
+            background: var(--accent-bg);
+            padding: 16px;
+            border-radius: 16px;
+            color: var(--accent);
+            transition: all var(--transition);
+        }
+        .service-card:hover .icon {
+            background: var(--accent);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .service-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        /* ===== 资源页 ===== */
+        #resources-page {
+            background: var(--bg-body);
+        }
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 50px;
+        }
+        .resource-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-card);
+            padding: 28px 26px;
+            transition: all var(--transition);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-card);
+        }
+        .resource-card:hover {
+            transform: translateY(-6px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+        }
+        .resource-card .top {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .resource-card .top .r-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--accent-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--accent);
+        }
+        .resource-card .top .r-icon.green {
+            background: rgba(0, 184, 148, 0.12);
+            color: #00b894;
+        }
+        .resource-card .top .r-icon.gold {
+            background: rgba(253, 203, 110, 0.12);
+            color: #fdcb6e;
+        }
+        .resource-card .top .r-icon.rose {
+            background: rgba(225, 112, 85, 0.12);
+            color: #e17055;
+        }
+        .resource-card h4 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .resource-card .r-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+        .resource-card .r-desc .tag {
+            display: inline-block;
+            font-size: 12px;
+            background: rgba(225, 112, 85, 0.15);
+            color: #e17055;
+            padding: 2px 12px;
+            border-radius: 30px;
+            margin-left: 6px;
+        }
+        .resource-card .r-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        /* ===== 关于页 ===== */
+        #about-page {
+            background: var(--bg-body);
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 40px;
+        }
+        .about-social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 20px 0 30px;
+        }
+        .about-social a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 22px;
+            border-radius: var(--radius-btn);
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            transition: all var(--transition);
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .about-social a:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+        .about-social a i {
+            font-size: 20px;
+            color: var(--accent);
+        }
+        .about-email {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin: 16px 0;
+        }
+        .about-email i {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+        .about-credit {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-card);
+            padding: 28px 30px;
+            box-shadow: var(--shadow-card);
+        }
+        .about-credit h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .about-credit p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .about-credit .highlight-text {
+            color: var(--text-primary);
+        }
+        /* ===== 页脚 ===== */
+        footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-card);
+            padding: 40px 0;
+            text-align: center;
+            transition: background var(--transition);
+        }
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        footer .footer-links a {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: color var(--transition);
+            cursor: pointer;
+        }
+        footer .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        footer .copy {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        footer .copy i {
+            color: var(--accent);
+        }
+        /* ===== 响应式 ===== */
+        @media (max-width: 1024px) {
+            .home-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .home-content .tagline {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .home-buttons {
+                justify-content: center;
+            }
+            .home-stats {
+                justify-items: center;
+            }
+            .home-visual .orb {
+                width: 260px;
+                height: 260px;
+            }
+            .home-visual .orb-inner {
+                font-size: 72px;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .about-social {
+                justify-content: center;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: var(--nav-height);
+                left: 0;
+                right: 0;
+                background: var(--bg-nav);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 24px 20px 30px;
+                gap: 4px;
+                border-bottom: 1px solid var(--border-card);
+                transform: translateY(-120%);
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                pointer-events: none;
+            }
+            .nav-links.open {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+            .nav-links a {
+                padding: 12px 20px;
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+            .navbar {
+                padding: 0 20px;
+            }
+            .nav-cta {
+                margin-top: 6px;
+            }
+            section {
+                padding: 60px 0;
+            }
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            .home-content h1 {
+                font-size: 34px;
+            }
+            .home-stats {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 12px;
+            }
+            .home-stats .stat-number {
+                font-size: 22px;
+            }
+        }
+        @media (max-width: 480px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .home-visual .orb {
+                width: 180px;
+                height: 180px;
+            }
+            .home-visual .orb-inner {
+                font-size: 48px;
+            }
+            .home-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 公众号弹窗DOM -->
+    <div id="mpPopup">
+        <div class="popup-box">
+            <h3>微信公众号</h3>
+            <p>截图二维码，打开微信扫码访问主页</p>
+            <img src="./img/mp-qrcode.png" alt="公众号二维码">
+            <button class="btn-sm" id="closeMpPopup">关闭弹窗</button>
+        </div>
+    </div>
+    <!-- 服务条款弹窗 -->
+    <div id="termPopup">
+        <div class="popup-box">
+            <h3>条款及条件</h3>
+            <div class="popup-content">
+                Hua Ke 蔚来 服务条款
+ 
+1. 协议认可
+访问、浏览本站全部页面，即代表你已完整阅读并同意本全部条款；不认可请立即关闭页面停止访问。
+​
+2. 站点定位
+本站仅为品牌信息静态展示页面，无线上下单、支付、交易功能；印刷、车辆维修、会员全部咨询预约、交易结算、售后沟通统一在官方微信公众号完成，本站仅做展示引流，不参与任何交易流程。
+​
+3. 用户使用规范
+ 
+- 仅允许个人正常浏览查阅，禁止爬虫、压测、镜像复制全站、盗用本站Logo/文案/页面用于仿站、商用宣传；
+​
+- 禁止使用本站内容从事违法违规活动；未成年人咨询服务请监护人陪同。
+ 
+4. 免责说明
+ 
+- 所有服务定价、标准、售后权责以微信公众号双方沟通内容为准，本站不承担交易纠纷、履约风险；
+​
+- 页面内网盘、第三方工具、外链网站由第三方运营，安全与内容由第三方负责，本站不担责；
+​
+- 本地文件、服务器、网络故障导致网站无法访问，运营方不作赔偿。
+ 
+5. 知识产权
+本站Logo、页面排版、文字文案版权归运营者所有，未经许可禁止复制、商用、二次修改。运营可随时调整页面内容，无需提前通知。
+​
+6. 协议更新
+条款不定期更新，页面更新后继续访问即视为接受新版协议。
+            </div>
+            <button class="btn-sm pop-close" id="closeTerm">关闭</button>
+        </div>
+    </div>
+    <!-- 隐私政策弹窗 -->
+    <div id="privacyPopup">
+        <div class="popup-box">
+            <h3>隐私政策</h3>
+            <div class="popup-content">
+                Hua Ke 蔚来 隐私政策
+ 
+1. 适用范围
+本政策仅约束本站网页；微信公众号拥有独立隐私规则，二者数据完全隔离，本站遵循《个人信息保护法》最小采集原则。
+​
+2. 信息收集规则
+ 
+- 纯浏览无需注册、不强制填写手机号、微信、姓名、身份证等任何隐私；
+​
+- 仅浏览器生成匿名访问记录（访问页面、设备、匿名IP），仅用于防爬虫、访问统计，无法定位个人；
+​
+- 本站完全不收集、不存储你的服务预约、联系方式，所有个人资料均由你主动提交至微信公众号，本站无任何读取权限。
+ 
+3. Cookie说明
+本站仅浏览器基础缓存Cookie，仅优化页面加载，无用户画像、广告追踪；你可随时清除/拒绝Cookie，不影响浏览。
+​
+4. 信息保护
+匿名访问记录仅站内安全统计使用，绝不售卖、分享给第三方，日志定期自动清理。
+​
+5. 第三方说明
+跳转微信、网盘、外部工具后，你的信息由对应平台隐私政策管辖，与本站无关。
+​
+6. 未成年人、用户权利
+未成年人使用建议监护人陪同；你可随时停止访问、清除本地浏览缓存。政策更新公示后即时生效，最终解释归Hua Ke 蔚来运营方。
+            </div>
+            <button class="btn-sm pop-close" id="closePrivacy">关闭</button>
+        </div>
+    </div>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">
+            <!-- 导航栏Logo 图一 -->
+            <img src="./img/logo-nav.png">
+            <span> </span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a class="active" data-page="home">首页</a></li>
+            <li><a data-page="services">服务</a></li>
+            <li><a data-page="resources">资源</a></li>
+            <li><a data-page="about">关于</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                <span class="icon-sun"><i class="fas fa-sun"></i></span>
+                <span class="icon-moon"><i class="fas fa-moon"></i></span>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="切换菜单">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+    <!-- ===== 页面容器 ===== -->
+    <div class="page-container">
+        <!-- ===== 首页 ===== -->
+        <div class="page active" id="page-home">
+            <section id="home">
+                <div class="container home-grid">
+                    <div class="home-content">
+                        <div class="subtitle">✦ 务实笃行 · 志启新程</div>
+                        <h1>
+                            <span class="accent">Hua Ke</span> 蔚来
+                        </h1>
+                        <p class="tagline">
+                            分享实用软件 · 自制工具开发 · 印刷服务 · 技术教程<br />
+                            为你的数字生活提供便捷解决方案，全平台同步更新。
+                        </p>
+                        <div class="home-buttons">
+                            <a class="btn btn-primary" data-page="resources"><i class="fas fa-arrow-right"></i> 探索资源</a>
+                            <a class="btn btn-outline" data-page="services"><i class="fas fa-th-large"></i> 所有服务</a>
+                        </div>
+                        <div class="home-stats">
+                            <div class="stat">
+                                <div class="stat-number">8+</div>
+                                <div class="stat-label">实用资源</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">4</div>
+                                <div class="stat-label">服务类别</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">免费分享</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home-visual">
+                        <div class="orb">
+                            <div class="orb-inner">HK</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- ===== 服务页 ===== -->
+        <div class="page" id="page-services">
+            <section id="services-page">
+                <div class="container">
+                    <div class="text-center">
+                        <span class="section-label">我们的服务</span>
+                        <h2 class="section-title">为你提供 <span class="highlight">多样化</span> 支持</h2>
+                        <p class="section-desc mx-auto">从资源分享到印刷维修，一站式满足你的数字与生活需求。</p>
+                    </div>
+                    <div class="services-grid">
+                       <div class="service-card">
+                            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <h3>资源分享</h3>
+                            <p>Hua Ke 蔚来 · 实用资源站，免费分享优质软件与工具。</p>
+                            <a class="btn-sm" data-page="resources"><i class="fas fa-arrow-right"></i> 前往资源</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon"><i class="fas fa-print"></i></div>
+                            <h3>印刷服务</h3>
+                            <p>为您提供更好的印刷体验，内部服务，品质保障。</p>
+                            <a class="btn-sm" data-page="about"><i class="fas fa-arrow-right"></i> 了解详情</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon"><i class="fas fa-wrench"></i></div>
+                            <h3>车辆维修</h3>
+                            <p>由宁阳县华盈维修部提供，让您的出行更便捷。</p>
+                            <a class="btn-sm" data-page="about"><i class="fas fa-arrow-right"></i> 了解详情</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon"><i class="fas fa-id-card"></i></div>
+                            <h3>会员办理</h3>
+                            <p>内部会员服务，享受专属权益与优先支持。</p>
+                            <a class="btn-sm" data-page="about"><i class="fas fa-arrow-right"></i> 了解详情</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- ===== 资源页 ===== -->
+        <div class="page" id="page-resources">
+            <section id="resources-page">
+                <div class="container">
+                    <div class="text-center">
+                        <span class="section-label">免费 · 实用 · 便捷</span>
+                        <h2 class="section-title">精选 <span class="highlight">资源</span> 分享</h2>
+                        <p class="section-desc mx-auto">建议搭配视频平台教程或介绍使用，获得更佳体验。</p>
+                    </div>
+                    <div class="resources-grid">
+                        <!-- 资源卡片 1 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon"><i class="fas fa-microchip"></i></div>
+                                <div><h4>非小米电脑安装超级小爱</h4></div>
+                            </div>
+                            <div class="r-desc">
+                                内置版本 2.0.0.231（安装包）
+                                <span class="tag">版本较低，无法语音唤醒</span>
+                            </div>
+                            <div class="r-actions">
+                                <a href="https://www.geegeng.com/s/HqMOcmg8?pwd=7j3t" target="_blank" class="btn-sm"><i class="fas fa-download"></i> 下载资源</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 2 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon green"><i class="fas fa-cloud"></i></div>
+                                <div><h4>桔梗云盘</h4></div>
+                            </div>
+                            <div class="r-desc">小众但免费不限速的网盘平台，数据分享好帮手。</div>
+                            <div class="r-actions">
+                                <a href="https://geegeng.com" target="_blank" class="btn-sm"><i class="fas fa-external-link-alt"></i> 进入平台</a>
+                                <a href="https://geegeng.com/downloads" target="_blank" class="btn-sm"><i class="fas fa-download"></i> 客户端</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 3 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon gold"><i class="fas fa-code"></i></div>
+                                <div><h4>上线了</h4></div>
+                            </div>
+                            <div class="r-desc">免费建站平台，轻松搭建网站与移动端应用。</div>
+                            <div class="r-actions">
+                                <a href="https://sxl.cn" target="_blank" class="btn-sm"><i class="fas fa-external-link-alt"></i> 进入平台</a>
+                                <a href="https://sxl.cn/mobile" target="_blank" class="btn-sm"><i class="fas fa-mobile-alt"></i> 移动端</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 4 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon rose"><i class="fas fa-tools"></i></div>
+                                <div><h4>小众技术工具库</h4></div>
+                            </div>
+                            <div class="r-desc">专注分享实用软件和精品网站的宝藏站点。</div>
+                            <div class="r-actions">
+                                <a href="https://www.xiaozhongjishu.com/" target="_blank" class="btn-sm"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 5 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon"><i class="fas fa-file-code"></i></div>
+                                <div><h4>HTML → EXE</h4></div>
+                            </div>
+                            <div class="r-desc">
+                                将 HTML 打包为 exe 可执行文件（附带加速器）
+                                <span class="tag">来自 B站 @血晷</span>
+                            </div>
+                            <div class="r-actions">
+                                <a href="https://www.geegeng.com/s/WMuqqICc" target="_blank" class="btn-sm"><i class="fas fa-download"></i> 下载资源</a>
+                                <a href="https://b23.tv/9XwRUNJ" target="_blank" class="btn-sm"><i class="fab fa-bilibili"></i> 教程</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 6 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon green"><i class="fab fa-android"></i></div>
+                                <div><h4>html-to-apk</h4></div>
+                            </div>
+                            <div class="r-desc">
+                                将 HTML 或网站打包为 Android APK
+                                <span class="tag">来自 B站 @fbw1209</span>
+                            </div>
+                            <div class="r-actions">
+                                <a href="https://www.geegeng.com/s/R2NpoGje" target="_blank" class="btn-sm"><i class="fas fa-download"></i> 下载资源</a>
+                                <a href="https://www.bilibili.com/video/BV1kHG86XEXc/" target="_blank" class="btn-sm"><i class="fab fa-bilibili"></i> 教程</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 7 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon gold"><i class="fas fa-exchange-alt"></i></div>
+                                <div><h4>File Converter</h4></div>
+                            </div>
+                            <div class="r-desc">文件格式转换工具，右键即可快速转换（界面英文）。</div>
+                            <div class="r-actions">
+                                <a href="https://www.geegeng.com/s/WMCe7cg8" target="_blank" class="btn-sm"><i class="fas fa-download"></i> 下载资源</a>
+                            </div>
+                        </div>
+                        <!-- 资源卡片 8 -->
+                        <div class="resource-card">
+                            <div class="top">
+                                <div class="r-icon rose"><i class="fas fa-clock"></i></div>
+                                <div><h4>全屏时钟</h4></div>
+                            </div>
+                            <div class="r-desc">
+                                在线全屏北京时间显示，适合教室、会议等场景。<br />
+                                <span style="color:var(--text-muted);font-size:13px;">QQ群：794094321（答案：006）</span>
+                            </div>
+                            <div class="r-actions">
+                                <a href="https://time.yingming006.cn/" target="_blank" class="btn-sm"><i class="fas fa-external-link-alt"></i> 使用工具</a>
+                                <a href="https://qm.qq.com/cgi-bin/qm/qr?k=j5JndC7U4j06b6ezE-EEu22wXQQgymOK" target="_blank" class="btn-sm"><i class="fab fa-qq"></i> 交流群</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- ===== 关于页 ===== -->
+        <div class="page" id="page-about">
+            <section id="about-page">
+                <div class="container">
+                    <div class="text-center">
+                        <span class="section-label">关于我们</span>
+                        <h2 class="section-title">了解 <span class="highlight">Hua Ke 蔚来</span></h2>
+                        <p class="section-desc mx-auto">连接 · 分享 · 成长</p>
+                    </div>
+                    <div class="about-grid">
+                        <div>
+                            <h3 style="font-size:22px;font-weight:600;margin-bottom:12px;">找到我们</h3>
+                            <p style="color:var(--text-secondary);margin-bottom:6px;">在以下平台关注我们，获取最新动态：</p>
+                            <div class="about-social">
+                                <a href="https://v.douyin.com/q03TNxgvxDA/" target="_blank"><i class="fab fa-tiktok"></i> 抖音</a>
+                                <a href="https://v.kuaishou.com/nl6NGnD8" target="_blank"><i class="fab fa-kickstarter-k"></i> 快手</a>
+                                <a href="https://b23.tv/Mk4zUMT" target="_blank"><i class="fab fa-bilibili"></i> 哔哩哔哩</a>
+                                <!-- 绑定弹窗点击事件 -->
+                                <a id="openMpPopupBtn"><i class="fab fa-weixin"></i> 公众号</a>
+                            </div>
+                            <div class="about-email">
+                                <i class="fas fa-envelope"></i> hkjsyxgs@126.com
+                            </div>
+                            <p style="color:var(--text-muted);font-size:15px;">有问题请通过邮箱或私信联系我们。</p>
+                        </div>
+                        <div class="about-credit">
+                            <h3><i class="fas fa-heart" style="color:#e17055;margin-right:8px;"></i> 特别鸣谢</h3>
+                            <p>
+                                <span class="highlight-text">上海鲸科信息科技有限公司</span>（上线了平台，提供网站服务）<br />
+                                <span class="highlight-text">淮安市六道信息技术有限公司</span>（桔梗云盘，提供数据分享服务）<br />
+                                <span class="highlight-text">宁阳县华盈维修部</span>（提供资金支持）<br /><br />
+                                B站 up主 <span class="highlight-text">@fbw1209</span>（html-to-apk）<br />
+                                B站 up主 <span class="highlight-text">@血晷</span>（HTML_to_EXE）<br />
+                                <span style="color:var(--text-muted);font-size:14px;">…… 以及所有支持我们的朋友。</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- ===== 页脚 ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a data-page="home">首页</a>
+                <a data-page="services">服务</a>
+                <a data-page="resources">资源</a>
+                <a data-page="about">关于</a>
+                <a href="mailto:hkjsyxgs@126.com">联系我们</a>
+                <a id="openTermBtn">条款及条件</a>
+                <a id="openPrivacyBtn">隐私政策</a>
+            </div>
+            <p class="copy">
+                &copy; 2026 <i class="fas fa-bolt"></i> Hua Ke 蔚来 ·
+                务实笃行 · 志启新程
+            </p>
+        </div>
+    </footer>
+    <!-- ===== JavaScript ===== -->
+    <script>
+        (function() {
+            'use strict';
+            // 公众号弹窗逻辑
+            const mpPopup = document.getElementById('mpPopup');
+            const openMpPopupBtn = document.getElementById('openMpPopupBtn');
+            const closeMpPopup = document.getElementById('closeMpPopup');
+            openMpPopupBtn.addEventListener('click', () => {
+                mpPopup.style.display = 'flex';
+            });
+            closeMpPopup.addEventListener('click', () => {
+                mpPopup.style.display = 'none';
+            });
+            mpPopup.addEventListener('click', (e) => {
+                if(e.target === mpPopup) mpPopup.style.display = 'none';
+            });
+
+            // 条款及条件弹窗
+            const termPopup = document.getElementById('termPopup');
+            const openTermBtn = document.getElementById('openTermBtn');
+            const closeTerm = document.getElementById('closeTerm');
+            openTermBtn.onclick = () => termPopup.style.display = 'flex';
+            closeTerm.onclick = () => termPopup.style.display = 'none';
+            termPopup.onclick = e => { if(e.target === termPopup) termPopup.style.display = 'none' };
+
+            // 隐私政策弹窗
+            const privacyPopup = document.getElementById('privacyPopup');
+            const openPrivacyBtn = document.getElementById('openPrivacyBtn');
+            const closePrivacy = document.getElementById('closePrivacy');
+            openPrivacyBtn.onclick = () => privacyPopup.style.display = 'flex';
+            closePrivacy.onclick = () => privacyPopup.style.display = 'none';
+            privacyPopup.onclick = e => { if(e.target === privacyPopup) privacyPopup.style.display = 'none' };
+
+            // ---- DOM 引用 ----
+            const navLinks = document.querySelectorAll('.nav-links a[data-page]');
+            const footerLinks = document.querySelectorAll('.footer-links a[data-page]');
+            const allPageTriggers = document.querySelectorAll('[data-page]');
+            const pages = {
+                home: document.getElementById('page-home'),
+                services: document.getElementById('page-services'),
+                resources: document.getElementById('page-resources'),
+                about: document.getElementById('page-about')
+            };
+            const navToggle = document.getElementById('navToggle');
+            const navLinksContainer = document.getElementById('navLinks');
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+            // ---- 页面切换 ----
+            function navigateTo(pageId) {
+                // 隐藏所有页面
+                Object.values(pages).forEach(p => p.classList.remove('active'));
+                // 显示目标页面
+                const target = pages[pageId];
+                if (target) target.classList.add('active');
+                // 更新导航高亮
+                navLinks.forEach(link => {
+                    const p = link.getAttribute('data-page');
+                    link.classList.toggle('active', p === pageId);
+                });
+                // 滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // 关闭移动菜单
+                navToggle.classList.remove('open');
+                navLinksContainer.classList.remove('open');
+            }
+            // 事件监听
+            allPageTriggers.forEach(el => {
+                el.addEventListener('click', function(e) {
+                    const page = this.getAttribute('data-page');
+                    if (page && pages[page]) {
+                        e.preventDefault();
+                        navigateTo(page);
+                    }
+                });
+            });
+            // 页脚链接同样处理
+            footerLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const page = this.getAttribute('data-page');
+                    if (page && pages[page]) {
+                        e.preventDefault();
+                        navigateTo(page);
+                    }
+                });
+            });
+            // ---- 移动端菜单 ----
+            navToggle.addEventListener('click', function() {
+                this.classList.toggle('open');
+                navLinksContainer.classList.toggle('open');
+            });
+            // 点击导航链接关闭菜单
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navToggle.classList.remove('open');
+                    navLinksContainer.classList.remove('open');
+                });
+            });
+            // ---- 深色/浅色切换 ----
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            }
+            function toggleTheme() {
+                const current = html.getAttribute('data-theme') || 'light';
+                const next = current === 'light' ? 'dark' : 'light';
+                setTheme(next);
+            }
+            themeToggle.addEventListener('click', toggleTheme);
+            // 恢复主题偏好
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+            // ---- ESC 关闭所有弹窗+菜单 ----
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    navToggle.classList.remove('open');
+                    navLinksContainer.classList.remove('open');
+                    mpPopup.style.display = 'none';
+                    termPopup.style.display = 'none';
+                    privacyPopup.style.display = 'none';
+                }
+            });
+            // ---- 默认加载首页 ----
+            navigateTo('home');
+        })();
+    </script>
+</body>
+</html>
