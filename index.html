@@ -97,6 +97,35 @@
             margin: 0 auto 16px;
             border-radius: 8px;
         }
+        /* ===== 通用图片弹窗（服务图片展示） ===== */
+        #imgPopup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        }
+        #imgPopup .popup-box {
+            background: var(--popup-bg);
+            color: var(--popup-text);
+            padding: 20px;
+            border-radius: var(--radius-card);
+            text-align: center;
+            max-width: 90%;
+            max-height: 90vh;
+            box-shadow: var(--shadow-card);
+        }
+        #imgPopup .popup-box img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 8px;
+            display: block;
+        }
+        #imgPopup .popup-box .close-btn {
+            margin-top: 16px;
+        }
         /* ===== 服务条款 & 隐私政策弹窗通用样式 ===== */
         #termPopup, #privacyPopup {
             display: none;
@@ -130,8 +159,11 @@
             color: var(--text-secondary);
             min-height: 300px;
             white-space: normal;
-            word-break: break-all;
+            word-break: break-word;
             overflow-wrap: break-word;
+        }
+        .popup-content p {
+            margin-bottom: 0.8em;
         }
         .pop-close {
             margin-top: 20px;
@@ -896,38 +928,25 @@
             <button class="btn-sm" id="closeMpPopup">关闭弹窗</button>
         </div>
     </div>
+    <!-- 服务图片弹窗（通用） -->
+    <div id="imgPopup">
+        <div class="popup-box">
+            <img id="imgPopupContent" src="" alt="服务展示图">
+            <button class="btn-sm close-btn" id="closeImgPopup">关闭</button>
+        </div>
+    </div>
     <!-- 服务条款弹窗 -->
     <div id="termPopup">
         <div class="popup-box">
             <h3>条款及条件</h3>
             <div class="popup-content">
-                Hua Ke 蔚来 服务条款
- 
-1. 协议认可
-访问、浏览本站全部页面，即代表你已完整阅读并同意本全部条款；不认可请立即关闭页面停止访问。
-​
-2. 站点定位
-本站仅为品牌信息静态展示页面，无线上下单、支付、交易功能；印刷、车辆维修、会员全部咨询预约、交易结算、售后沟通统一在官方微信公众号完成，本站仅做展示引流，不参与任何交易流程。
-​
-3. 用户使用规范
- 
-- 仅允许个人正常浏览查阅，禁止爬虫、压测、镜像复制全站、盗用本站Logo/文案/页面用于仿站、商用宣传；
-​
-- 禁止使用本站内容从事违法违规活动；未成年人咨询服务请监护人陪同。
- 
-4. 免责说明
- 
-- 所有服务定价、标准、售后权责以微信公众号双方沟通内容为准，本站不承担交易纠纷、履约风险；
-​
-- 页面内网盘、第三方工具、外链网站由第三方运营，安全与内容由第三方负责，本站不担责；
-​
-- 本地文件、服务器、网络故障导致网站无法访问，运营方不作赔偿。
- 
-5. 知识产权
-本站Logo、页面排版、文字文案版权归运营者所有，未经许可禁止复制、商用、二次修改。运营可随时调整页面内容，无需提前通知。
-​
-6. 协议更新
-条款不定期更新，页面更新后继续访问即视为接受新版协议。
+                <p><strong>Hua Ke 蔚来 服务条款</strong></p>
+                <p><strong>1. 协议认可</strong><br>访问、浏览本站全部页面，即代表你已完整阅读并同意本全部条款；不认可请立即关闭页面停止访问。</p>
+                <p><strong>2. 站点定位</strong><br>本站仅为品牌信息静态展示页面，无线上下单、支付、交易功能；印刷、车辆维修、会员全部咨询预约、交易结算、售后沟通统一在官方微信公众号完成，本站仅做展示引流，不参与任何交易流程。</p>
+                <p><strong>3. 用户使用规范</strong><br>- 仅允许个人正常浏览查阅，禁止爬虫、压测、镜像复制全站、盗用本站Logo/文案/页面用于仿站、商用宣传；<br>- 禁止使用本站内容从事违法违规活动；未成年人咨询服务请监护人陪同。</p>
+                <p><strong>4. 免责说明</strong><br>- 所有服务定价、标准、售后权责以微信公众号双方沟通内容为准，本站不承担交易纠纷、履约风险；<br>- 页面内网盘、第三方工具、外链网站由第三方运营，安全与内容由第三方负责，本站不担责；<br>- 本地文件、服务器、网络故障导致网站无法访问，运营方不作赔偿。</p>
+                <p><strong>5. 知识产权</strong><br>本站Logo、页面排版、文字文案版权归运营者所有，未经许可禁止复制、商用、二次修改。运营可随时调整页面内容，无需提前通知。</p>
+                <p><strong>6. 协议更新</strong><br>条款不定期更新，页面更新后继续访问即视为接受新版协议。</p>
             </div>
             <button class="btn-sm pop-close" id="closeTerm">关闭</button>
         </div>
@@ -937,30 +956,13 @@
         <div class="popup-box">
             <h3>隐私政策</h3>
             <div class="popup-content">
-                Hua Ke 蔚来 隐私政策
- 
-1. 适用范围
-本政策仅约束本站网页；微信公众号拥有独立隐私规则，二者数据完全隔离，本站遵循《个人信息保护法》最小采集原则。
-​
-2. 信息收集规则
- 
-- 纯浏览无需注册、不强制填写手机号、微信、姓名、身份证等任何隐私；
-​
-- 仅浏览器生成匿名访问记录（访问页面、设备、匿名IP），仅用于防爬虫、访问统计，无法定位个人；
-​
-- 本站完全不收集、不存储你的服务预约、联系方式，所有个人资料均由你主动提交至微信公众号，本站无任何读取权限。
- 
-3. Cookie说明
-本站仅浏览器基础缓存Cookie，仅优化页面加载，无用户画像、广告追踪；你可随时清除/拒绝Cookie，不影响浏览。
-​
-4. 信息保护
-匿名访问记录仅站内安全统计使用，绝不售卖、分享给第三方，日志定期自动清理。
-​
-5. 第三方说明
-跳转微信、网盘、外部工具后，你的信息由对应平台隐私政策管辖，与本站无关。
-​
-6. 未成年人、用户权利
-未成年人使用建议监护人陪同；你可随时停止访问、清除本地浏览缓存。政策更新公示后即时生效，最终解释归Hua Ke 蔚来运营方。
+                <p><strong>Hua Ke 蔚来 隐私政策</strong></p>
+                <p><strong>1. 适用范围</strong><br>本政策仅约束本站网页；微信公众号拥有独立隐私规则，二者数据完全隔离，本站遵循《个人信息保护法》最小采集原则。</p>
+                <p><strong>2. 信息收集规则</strong><br>- 纯浏览无需注册、不强制填写手机号、微信、姓名、身份证等任何隐私；<br>- 仅浏览器生成匿名访问记录（访问页面、设备、匿名IP），仅用于防爬虫、访问统计，无法定位个人；<br>- 本站完全不收集、不存储你的服务预约、联系方式，所有个人资料均由你主动提交至微信公众号，本站无任何读取权限。</p>
+                <p><strong>3. Cookie说明</strong><br>本站仅浏览器基础缓存Cookie，仅优化页面加载，无用户画像、广告追踪；你可随时清除/拒绝Cookie，不影响浏览。</p>
+                <p><strong>4. 信息保护</strong><br>匿名访问记录仅站内安全统计使用，绝不售卖、分享给第三方，日志定期自动清理。</p>
+                <p><strong>5. 第三方说明</strong><br>跳转微信、网盘、外部工具后，你的信息由对应平台隐私政策管辖，与本站无关。</p>
+                <p><strong>6. 未成年人、用户权利</strong><br>未成年人使用建议监护人陪同；你可随时停止访问、清除本地浏览缓存。政策更新公示后即时生效，最终解释归Hua Ke 蔚来运营方。</p>
             </div>
             <button class="btn-sm pop-close" id="closePrivacy">关闭</button>
         </div>
@@ -1050,19 +1052,19 @@
                             <div class="icon"><i class="fas fa-print"></i></div>
                             <h3>印刷服务</h3>
                             <p>为您提供更好的印刷体验，内部服务，品质保障。</p>
-                            <a class="btn-sm" data-page="about"><i class="fas fa-arrow-right"></i> 了解详情</a>
+                            <a class="btn-sm img-popup-trigger" data-img-src="./img/mp-qrcode.png"><i class="fas fa-arrow-right"></i> 了解详情</a>
                         </div>
                         <div class="service-card">
                             <div class="icon"><i class="fas fa-wrench"></i></div>
                             <h3>车辆维修</h3>
                             <p>由宁阳县华盈维修部提供，让您的出行更便捷。</p>
-                            <a class="btn-sm" data-page="about"><i class="fas fa-arrow-right"></i> 了解详情</a>
+                            <a class="btn-sm img-popup-trigger" data-img-src="./img/repair.jpg"><i class="fas fa-arrow-right"></i> 了解详情</a>
                         </div>
                         <div class="service-card">
                             <div class="icon"><i class="fas fa-id-card"></i></div>
                             <h3>会员办理</h3>
                             <p>内部会员服务，享受专属权益与优先支持。</p>
-                            <a class="btn-sm" data-page="about"><i class="fas fa-arrow-right"></i> 了解详情</a>
+                            <a class="btn-sm img-popup-trigger" data-img-src="./img/mp-qrcode.png"><i class="fas fa-arrow-right"></i> 了解详情</a>
                         </div>
                     </div>
                 </div>
@@ -1264,7 +1266,31 @@
                 if(e.target === mpPopup) mpPopup.style.display = 'none';
             });
 
-            // 条款及条件弹窗
+            // ---- 服务图片弹窗（印刷、维修、会员） ----
+            const imgPopup = document.getElementById('imgPopup');
+            const imgPopupContent = document.getElementById('imgPopupContent');
+            const closeImgPopup = document.getElementById('closeImgPopup');
+            const imgTriggers = document.querySelectorAll('.img-popup-trigger');
+
+            imgTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const src = this.getAttribute('data-img-src');
+                    if (src) {
+                        imgPopupContent.src = src;
+                        imgPopup.style.display = 'flex';
+                    }
+                });
+            });
+
+            closeImgPopup.addEventListener('click', () => {
+                imgPopup.style.display = 'none';
+            });
+            imgPopup.addEventListener('click', (e) => {
+                if (e.target === imgPopup) imgPopup.style.display = 'none';
+            });
+
+            // ---- 条款及条件弹窗 ----
             const termPopup = document.getElementById('termPopup');
             const openTermBtn = document.getElementById('openTermBtn');
             const closeTerm = document.getElementById('closeTerm');
@@ -1272,7 +1298,7 @@
             closeTerm.onclick = () => termPopup.style.display = 'none';
             termPopup.onclick = e => { if(e.target === termPopup) termPopup.style.display = 'none' };
 
-            // 隐私政策弹窗
+            // ---- 隐私政策弹窗 ----
             const privacyPopup = document.getElementById('privacyPopup');
             const openPrivacyBtn = document.getElementById('openPrivacyBtn');
             const closePrivacy = document.getElementById('closePrivacy');
@@ -1366,6 +1392,7 @@
                     mpPopup.style.display = 'none';
                     termPopup.style.display = 'none';
                     privacyPopup.style.display = 'none';
+                    imgPopup.style.display = 'none';
                 }
             });
             // ---- 默认加载首页 ----
