@@ -64,7 +64,8 @@
         }
 
         /* ===== 弹窗样式 ===== */
-        #mpPopup, #imgPopup, #termPopup, #privacyPopup {
+        #mpPopup, #imgPopup, #termPopup, #privacyPopup,
+        #noticePopup, #noticeDetailPopup {
             display: none;
             position: fixed;
             inset: 0;
@@ -74,7 +75,8 @@
             justify-content: center;
         }
         #mpPopup .popup-box, #imgPopup .popup-box,
-        #termPopup .popup-box, #privacyPopup .popup-box {
+        #termPopup .popup-box, #privacyPopup .popup-box,
+        #noticePopup .popup-box, #noticeDetailPopup .popup-box {
             background: var(--popup-bg);
             color: var(--popup-text);
             padding: 28px;
@@ -85,38 +87,94 @@
             box-shadow: var(--shadow-card);
             overflow-y: auto;
         }
-        #imgPopup .popup-box img {
-            max-width: 100%;
-            max-height: 70vh;
-            border-radius: 8px;
-            display: block;
-        }
-        #mpPopup .popup-box img {
-            width: 220px;
-            margin: 0 auto 16px;
-            border-radius: 8px;
-        }
-        #termPopup .popup-box, #privacyPopup .popup-box {
+        #noticePopup .popup-box {
+            max-width: 500px;
             text-align: left;
-            max-width: 680px;
-            padding: 32px;
+            padding: 20px;
         }
-        #termPopup h3, #privacyPopup h3 {
-            font-size: 22px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
+        #noticePopup .popup-box h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
             border-bottom: 1px solid var(--border-card);
+            padding-bottom: 8px;
         }
-        .popup-content p {
-            margin-bottom: 0.8em;
-            line-height: 1.8;
+        #noticePopup .notice-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #noticePopup .notice-list li {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border-card);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #noticePopup .notice-list li:hover {
+            background: var(--bg-card-hover);
+        }
+        #noticePopup .notice-list li .notice-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        #noticePopup .notice-list li .notice-summary {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        #noticePopup .notice-list li .notice-arrow {
+            color: var(--accent);
             font-size: 14px;
-            color: var(--text-secondary);
         }
-        .pop-close, #closeMpPopup, #closeImgPopup {
-            margin-top: 16px;
-            width: 100%;
+        #noticeDetailPopup .popup-box {
+            max-width: 500px;
+            text-align: left;
+            padding: 24px;
+        }
+        #noticeDetailPopup .popup-box h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        #noticeDetailPopup .popup-box .detail-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+        .notice-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #e17055;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
             justify-content: center;
+        }
+        #noticeBtn {
+            position: relative;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 16px;
+        }
+        #noticeBtn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
         }
 
         /* ===== 重置 & 基础 ===== */
@@ -496,11 +554,37 @@
 
         /* ===== 资源页 ===== */
         #resources-page { background: var(--bg-body); }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px auto 20px;
+            max-width: 500px;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: var(--radius-btn);
+            border: 1px solid var(--border-card);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+            box-shadow: var(--shadow-card);
+        }
+        .search-container input:focus {
+            border-color: var(--accent);
+        }
+        .search-container input::placeholder {
+            color: var(--text-muted);
+        }
+
         .resources-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
-            margin-top: 50px;
+            margin-top: 20px;
         }
         .resource-card {
             background: var(--bg-card);
@@ -564,6 +648,9 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 4px;
+        }
+        .resource-card.hidden-by-search {
+            display: none !important;
         }
 
         /* ===== 关于页 ===== */
@@ -737,6 +824,25 @@
         </div>
     </div>
 
+    <!-- ===== 新增通知弹窗 ===== -->
+    <div id="noticePopup">
+        <div class="popup-box">
+            <h3><i class="fas fa-bell"></i> 通知</h3>
+            <ul class="notice-list" id="noticeList">
+                <!-- 将由 JavaScript 动态生成 -->
+            </ul>
+            <button class="btn-sm pop-close" id="closeNoticePopup">关闭</button>
+        </div>
+    </div>
+    <!-- 通知详情弹窗 -->
+    <div id="noticeDetailPopup">
+        <div class="popup-box">
+            <h4 id="noticeDetailTitle">标题</h4>
+            <div class="detail-content" id="noticeDetailContent">内容</div>
+            <button class="btn-sm pop-close" id="closeNoticeDetailPopup">关闭</button>
+        </div>
+    </div>
+
     <!-- ===== 导航栏 ===== -->
     <nav class="navbar" id="navbar">
         <div class="nav-logo">
@@ -750,6 +856,11 @@
             <li><a data-page="about">关于</a></li>
         </ul>
         <div class="nav-actions">
+            <!-- 新增通知按钮 -->
+            <button id="noticeBtn" aria-label="通知">
+                <i class="fas fa-bell"></i>
+                <span class="notice-badge" id="noticeBadge">3</span>
+            </button>
             <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
                 <span class="icon-sun"><i class="fas fa-sun"></i></span>
                 <span class="icon-moon"><i class="fas fa-moon"></i></span>
@@ -836,9 +947,15 @@
                         <h2 class="section-title">精选 <span class="highlight">资源</span> 分享</h2>
                         <p class="section-desc mx-auto">建议搭配视频平台教程或介绍使用，获得更佳体验。</p>
                     </div>
-                    <div class="resources-grid">
+
+                    <!-- ===== 新增搜索框 ===== -->
+                    <div class="search-container">
+                        <input type="text" id="resourceSearch" placeholder="🔍 搜索资源（关键词）" />
+                    </div>
+
+                    <div class="resources-grid" id="resourceGrid">
                         <!-- 资源卡片 1 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="非小米电脑安装超级小爱" data-desc="内置版本 2.0.0.231（安装包）版本较低，无法语音唤醒">
                             <div class="top">
                                 <div class="r-icon"><i class="fas fa-microchip"></i></div>
                                 <div><h4>非小米电脑安装超级小爱</h4></div>
@@ -852,7 +969,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 2 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="桔梗云盘" data-desc="小众但免费不限速的网盘平台，数据分享好帮手">
                             <div class="top">
                                 <div class="r-icon green"><i class="fas fa-cloud"></i></div>
                                 <div><h4>桔梗云盘</h4></div>
@@ -864,7 +981,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 3 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="上线了" data-desc="免费建站平台，轻松搭建网站与移动端应用">
                             <div class="top">
                                 <div class="r-icon gold"><i class="fas fa-code"></i></div>
                                 <div><h4>上线了</h4></div>
@@ -876,7 +993,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 4 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="小众技术工具库" data-desc="专注分享实用软件和精品网站的宝藏站点">
                             <div class="top">
                                 <div class="r-icon rose"><i class="fas fa-tools"></i></div>
                                 <div><h4>小众技术工具库</h4></div>
@@ -887,7 +1004,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 5 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="HTML → EXE" data-desc="将 HTML 打包为 exe 可执行文件（附带加速器）来自 B站 @血晷">
                             <div class="top">
                                 <div class="r-icon"><i class="fas fa-file-code"></i></div>
                                 <div><h4>HTML → EXE</h4></div>
@@ -902,7 +1019,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 6 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="html-to-apk" data-desc="将 HTML 或网站打包为 Android APK 来自 B站 @fbw1209">
                             <div class="top">
                                 <div class="r-icon green"><i class="fab fa-android"></i></div>
                                 <div><h4>html-to-apk</h4></div>
@@ -917,7 +1034,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 7 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="File Converter" data-desc="文件格式转换工具，右键即可快速转换（界面英文）">
                             <div class="top">
                                 <div class="r-icon gold"><i class="fas fa-exchange-alt"></i></div>
                                 <div><h4>File Converter</h4></div>
@@ -928,7 +1045,7 @@
                             </div>
                         </div>
                         <!-- 资源卡片 8 -->
-                        <div class="resource-card">
+                        <div class="resource-card" data-title="全屏时钟" data-desc="在线全屏北京时间显示，适合教室、会议等场景 QQ群：794094321（答案：006）">
                             <div class="top">
                                 <div class="r-icon rose"><i class="fas fa-clock"></i></div>
                                 <div><h4>全屏时钟</h4></div>
@@ -1039,6 +1156,71 @@
             document.getElementById('closePrivacy').onclick = () => privacyPopup.style.display = 'none';
             privacyPopup.onclick = e => { if(e.target === privacyPopup) privacyPopup.style.display = 'none'; };
 
+            // ===== 新增通知功能 =====
+            const noticePopup = document.getElementById('noticePopup');
+            const noticeDetailPopup = document.getElementById('noticeDetailPopup');
+            const noticeList = document.getElementById('noticeList');
+            const noticeBtn = document.getElementById('noticeBtn');
+            const noticeBadge = document.getElementById('noticeBadge');
+            const closeNotice = document.getElementById('closeNoticePopup');
+            const closeDetail = document.getElementById('closeNoticeDetailPopup');
+            const detailTitle = document.getElementById('noticeDetailTitle');
+            const detailContent = document.getElementById('noticeDetailContent');
+
+            // ===== 修改：通知数据，summary 改为 date =====
+            const notices = [
+                { id: 1, title: '更新日志', date: '2026-08-12 10:48', content: '1. 新站点正式启用：https://hkwl.pages.dev/，旧站点归档迁移：https://hkwlold.mysxl.cn/\n2. UI界面全面翻新\n3. 新增深浅色主题模式\n4. 优化系统主题自动同步功能\n5. 优化页面展示效果\n6. 修复各类弹窗显示异常\n7. 新增流畅交互动效' },
+                { id: 2, title: '感谢支持', date: '2026-08-13 22:36', content: 'Hua Ke 蔚来自上线以来，得到了许多朋友的关注与支持，我们深感荣幸。未来将不断丰富资源，优化体验。' },
+                { id: 3, title: '更新日志', date: '2026-08-14 21:35', content: '1. 新增消息中心功能\n2. 新增资源搜索功能' },
+            ];
+
+            // ===== 修改：渲染通知列表（倒序显示，最新在前） =====
+            function renderNotices() {
+                noticeList.innerHTML = '';
+                // 使用 reverse() 使新通知（id 大的）显示在前面
+                [...notices].reverse().forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <div>
+                            <div class="notice-title">${item.title}</div>
+                            <div class="notice-summary">${item.date}</div>   <!-- 显示日期 -->
+                        </div>
+                        <span class="notice-arrow"><i class="fas fa-chevron-right"></i></span>
+                    `;
+                    li.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        detailTitle.textContent = item.title;
+                        detailContent.textContent = item.content;
+                        noticeDetailPopup.style.display = 'flex';
+                    });
+                    noticeList.appendChild(li);
+                });
+                noticeBadge.textContent = notices.length;
+            }
+            renderNotices();
+
+            // 打开通知列表
+            noticeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                noticePopup.style.display = 'flex';
+            });
+
+            // 关闭通知列表
+            closeNotice.addEventListener('click', () => {
+                noticePopup.style.display = 'none';
+            });
+            noticePopup.addEventListener('click', function(e) {
+                if (e.target === this) this.style.display = 'none';
+            });
+
+            // 关闭详情弹窗
+            closeDetail.addEventListener('click', () => {
+                noticeDetailPopup.style.display = 'none';
+            });
+            noticeDetailPopup.addEventListener('click', function(e) {
+                if (e.target === this) this.style.display = 'none';
+            });
+
             // ---- 页面切换 ----
             const navLinks = document.querySelectorAll('.nav-links a[data-page]');
             const footerLinks = document.querySelectorAll('.footer-links a[data-page]');
@@ -1063,6 +1245,13 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 navToggle.classList.remove('open');
                 navLinksContainer.classList.remove('open');
+                if (pageId === 'resources') {
+                    const searchInput = document.getElementById('resourceSearch');
+                    if (searchInput) {
+                        searchInput.value = '';
+                        filterResources('');
+                    }
+                }
             }
 
             allPageTriggers.forEach(el => {
@@ -1100,21 +1289,16 @@
                 html.setAttribute('data-theme', isDark ? 'dark' : 'light');
             }
 
-            // 初始化：读取系统偏好
             const darkModeMedia = window.matchMedia('(prefers-color-scheme: dark)');
             applyTheme(darkModeMedia.matches);
-
-            // 监听系统主题变化，实时切换
             darkModeMedia.addEventListener('change', function(e) {
                 applyTheme(e.matches);
             });
 
-            // 手动切换按钮（仅临时切换，不保存，刷新后恢复系统）
             themeToggle.addEventListener('click', function() {
                 const current = html.getAttribute('data-theme');
                 const next = current === 'light' ? 'dark' : 'light';
                 applyTheme(next === 'dark');
-                // 不保存，故刷新或系统变化后重置
             });
 
             // ---- ESC 关闭所有 ----
@@ -1126,8 +1310,32 @@
                     termPopup.style.display = 'none';
                     privacyPopup.style.display = 'none';
                     imgPopup.style.display = 'none';
+                    noticePopup.style.display = 'none';
+                    noticeDetailPopup.style.display = 'none';
                 }
             });
+
+            // =============================================
+            // ===== 新增：资源搜索功能 =====
+            // =============================================
+            const searchInput = document.getElementById('resourceSearch');
+            const resourceCards = document.querySelectorAll('.resource-card');
+
+            function filterResources(keyword) {
+                const lower = keyword.toLowerCase().trim();
+                resourceCards.forEach(card => {
+                    const title = card.getAttribute('data-title') || '';
+                    const desc = card.getAttribute('data-desc') || '';
+                    const match = title.toLowerCase().includes(lower) || desc.toLowerCase().includes(lower);
+                    card.classList.toggle('hidden-by-search', !match);
+                });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterResources(this.value);
+                });
+            }
 
             // ---- 默认加载首页 ----
             navigateTo('home');
